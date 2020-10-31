@@ -2,9 +2,13 @@ let buttonColours = ["red", "blue", "green", "yellow"];
 
 let gamePattern = [];
 let userClickedPattern = [];
-//nextSequence();
+
+let started = false;
+
+let level = 0;
+
 //adding a click event to the btn class
-$('.btn').click(function(){
+$('.btn').click(function() {
 
   let userChosenColour = $(this).attr("id");
   userClickedPattern.push(userChosenColour);
@@ -14,27 +18,40 @@ $('.btn').click(function(){
   animatePress(userChosenColour);
 });
 
+//check if key is pressedd
+$(document).keypress(function(event) {
+  if (!started) {
+    $("#level-title").text("Level " + level);
+    nextSequence();
+    started = true;
+  }
+});
 
-function nextSequence(){
+
+function nextSequence() {
+  level++;
+
+  $("#level-title").text("Level " + level);
+
   let randomNumber = Math.floor(Math.random() * 4);
   let randomChosenColour = buttonColours[randomNumber];
   gamePattern.push(randomChosenColour);
 
   // Selecting the buttons with the same Id
- $('#'+randomChosenColour).fadeIn(100).fadeOut(100).fadeIn(100);
+  $('#' + randomChosenColour).fadeIn(100).fadeOut(100).fadeIn(100);
 
- playSound(randomChosenColour)
+  playSound(randomChosenColour)
 }
 
-function animatePress(currentColour){
+function animatePress(currentColour) {
   $('#' + currentColour).addClass("pressed");
 
-  setTimeout(function () {
+  setTimeout(function() {
     $("#" + currentColour).removeClass("pressed");
   }, 100);
 }
 
 function playSound(name) {
-  let audio = new Audio ("sounds/" + name + ".mp3");
+  let audio = new Audio("sounds/" + name + ".mp3");
   audio.play();
 }

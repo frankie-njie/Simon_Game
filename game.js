@@ -4,7 +4,6 @@ let gamePattern = [];
 let userClickedPattern = [];
 
 let started = false;
-
 let level = 0;
 
 //adding a click event to the btn class
@@ -16,9 +15,10 @@ $('.btn').click(function() {
 
   playSound(userChosenColour);
   animatePress(userChosenColour);
+  checkAnswer(userClickedPattern.length-1);
 });
 
-//check if key is pressedd
+//check if key is pressedd to start game
 $(document).keypress(function(event) {
   if (!started) {
     $("#level-title").text("Level " + level);
@@ -27,8 +27,26 @@ $(document).keypress(function(event) {
   }
 });
 
+function checkAnswer(currentLevel) {
+  if(gamePattern[currentLevel] === userClickedPattern[currentLevel]){
+    console.log("success");
+
+    if(userClickedPattern.length === gamePattern.length){
+
+      setTimeout(function () {
+        nextSequence();
+      }, 1000);
+    }
+
+  }else {
+    console.log("wrong");
+  }
+}
+
 
 function nextSequence() {
+  userClickedPattern = [];
+
   level++;
 
   $("#level-title").text("Level " + level);
